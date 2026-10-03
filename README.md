@@ -180,6 +180,16 @@ Random Forest feature importance was used to examine which customer attributes c
 ![Feature Importance](images/feature_importance.png)
 
 This provides an additional view of the factors the model used when predicting customer churn.
+### Key Business Insights
+
+Based on the Random Forest feature importance analysis:
+
+- `TotalCharges` and `MonthlyCharges` were among the most important features used by the model.
+- `Contract` and `tenure` also had high feature importance, indicating that customer relationship and billing characteristics were important inputs to the prediction model.
+- Service-related features such as `OnlineSecurity`, `TechSupport`, and `OnlineBackup` also contributed to the model's predictions.
+- `PaymentMethod`, `Dependents`, and `InternetService` had comparatively lower importance among the top 10 features.
+
+Feature importance indicates how much each feature contributed to the Random Forest's predictions; it does not imply that a feature directly causes customer churn.
 
 ---
 
