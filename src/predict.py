@@ -1,9 +1,18 @@
 import pickle
+from pathlib import Path
+
 import pandas as pd
 
 
+# Get project root directory
+BASE_DIR = Path(__file__).resolve().parents[1]
+
+MODEL_PATH = BASE_DIR / "model" / "customer_churn_model.pkl"
+ENCODER_PATH = BASE_DIR / "model" / "encoders.pkl"
+
+
 # Load trained model
-with open("model/customer_churn_model.pkl", "rb") as f:
+with open(MODEL_PATH, "rb") as f:
     model_data = pickle.load(f)
 
 loaded_model = model_data["model"]
@@ -39,7 +48,7 @@ input_data_df = pd.DataFrame([input_data])
 
 
 # Load saved encoders
-with open("model/encoders.pkl", "rb") as f:
+with open(ENCODER_PATH, "rb") as f:
     encoders = pickle.load(f)
 
 
