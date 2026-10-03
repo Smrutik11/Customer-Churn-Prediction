@@ -1,6 +1,9 @@
 # Customer Churn Prediction using Machine Learning
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Smrutik11/Customer-Churn-Prediction/blob/main/notebooks/customer_churn_prediction.ipynb)
+
 An end-to-end machine learning project that predicts customer churn using customer demographics, service usage, contract information, and billing details.
+
 
 The project covers data preprocessing, exploratory data analysis, class imbalance handling using SMOTE, model comparison, evaluation, model persistence, and prediction on unseen customer records.
 
