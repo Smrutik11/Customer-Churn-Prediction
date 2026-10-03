@@ -1,29 +1,44 @@
 # Customer Churn Prediction using Machine Learning
 
-## Overview
+An end-to-end machine learning project that predicts customer churn using customer demographics, service usage, contract information, and billing details.
 
-This project presents an end-to-end Machine Learning pipeline to predict customer churn using demographic information, service usage, and billing details. The objective is to identify customers who are likely to discontinue a service, enabling businesses to implement proactive customer retention strategies.
+The project covers data preprocessing, exploratory data analysis, class imbalance handling using SMOTE, model comparison, evaluation, model persistence, and prediction on unseen customer records.
 
 ---
 
-## Objectives
+## Business Problem
 
-- Perform Exploratory Data Analysis (EDA) to understand customer behavior
-- Preprocess data by handling missing values and encoding categorical features
-- Address class imbalance using SMOTE
-- Train and compare multiple Machine Learning models
-- Select the best-performing model
-- Predict churn for new customer records
-- Save the trained model for future inference
+Customer churn can affect recurring revenue and customer retention.
+
+The objective of this project is to identify customers who are more likely to churn so that businesses can better understand churn patterns and prioritize retention efforts.
+
+---
+
+## Project Objectives
+
+- Clean and preprocess customer data
+- Perform exploratory data analysis (EDA)
+- Encode categorical features for machine learning
+- Handle class imbalance using SMOTE
+- Compare multiple classification models
+- Evaluate model performance using classification metrics
+- Save the trained model and preprocessing encoders
+- Generate predictions for new customer records
 
 ---
 
 ## Dataset
 
-- **Dataset:** Telco Customer Churn Dataset
-- **Records:** 7,043 customers
-- **Features:** 20
-- **Target Variable:** Churn (Yes/No)
+**Dataset:** Telco Customer Churn Dataset
+
+- Records: 7,043 customers
+- Original features: 20
+- Target variable: Churn
+- Target classes: Yes / No
+
+The dataset contains information related to customer demographics, services, contracts, payment methods, monthly charges, and total charges.
+
+The raw dataset is not included in this repository.
 
 ---
 
@@ -35,76 +50,156 @@ This project presents an end-to-end Machine Learning pipeline to predict custome
 - Matplotlib
 - Seaborn
 - Scikit-learn
-- Imbalanced-learn (SMOTE)
+- Imbalanced-learn
 - XGBoost
 - Pickle
-- Jupyter Notebook / Google Colab
+- Jupyter Notebook
+- Google Colab
 
 ---
 
 ## Project Workflow
 
-1. Data Cleaning and Preprocessing
-   - Removed irrelevant features
-   - Handled missing values
-   - Converted data types
+### 1. Data Loading and Cleaning
 
-2. Exploratory Data Analysis
-   - Distribution analysis
-   - Count plots
-   - Box plots
-   - Correlation heatmap
+- Loaded the Telco Customer Churn dataset
+- Removed the `customerID` column
+- Converted `TotalCharges` to a numeric data type
+- Handled missing values
+- Converted the target variable into binary format
 
-3. Feature Engineering
-   - Label encoding of categorical variables
-   - Preserved encoders for inference
+### 2. Exploratory Data Analysis
 
-4. Handling Class Imbalance
-   - Applied SMOTE on the training dataset
+Explored customer characteristics and churn distribution using:
 
-5. Model Development
-   - Decision Tree
-   - Random Forest
-   - XGBoost
-   - 5-Fold Cross Validation
+- Distribution analysis
+- Count plots
+- Box plots
+- Correlation analysis
+- Descriptive statistics
 
-6. Model Evaluation
-   - Accuracy
-   - Precision
-   - Recall
-   - F1-Score
+### 3. Feature Processing
 
-7. Model Persistence
-   - Saved the trained model and preprocessing objects using Pickle
+- Identified categorical features
+- Applied Label Encoding to categorical variables
+- Preserved fitted encoders for future predictions
+- Separated features and target variable
 
-8. Prediction
-   - Generated churn prediction and prediction probability for unseen customer data
+### 4. Train-Test Split
+
+The dataset was divided into:
+
+- 80% training data
+- 20% test data
+
+A fixed random state was used to make the experiment reproducible.
+
+### 5. Handling Class Imbalance
+
+The target variable contained more non-churn customers than churn customers.
+
+SMOTE (Synthetic Minority Oversampling Technique) was used to balance the training data.
+
+For cross-validation, SMOTE was applied within each training fold to avoid applying oversampling to validation data.
+
+### 6. Model Development
+
+Three classification models were evaluated:
+
+- Decision Tree
+- Random Forest
+- XGBoost
+
+### 7. Model Evaluation
+
+Models were compared using 5-fold stratified cross-validation.
+
+The final Random Forest model was evaluated on the held-out test set using:
+
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- Confusion Matrix
 
 ---
 
-## Results
+## Model Comparison
 
-The Random Forest classifier achieved the best overall performance among the evaluated models.
+### 5-Fold Cross-Validation Accuracy
 
-| Metric | Value |
-|---------|-------|
-| Best Model | Random Forest |
-| Accuracy | ~78% |
-| Validation | 5-Fold Cross Validation |
+| Model | CV Accuracy |
+|---|---:|
+| Decision Tree | 71% |
+| Random Forest | 78% |
+| XGBoost | 77% |
 
-The evaluation focused on Recall and F1-Score for the churn class due to its business significance.
+![Model Comparison](images/model_comparison.png)
+
+Random Forest achieved the highest cross-validation accuracy among the evaluated models.
 
 ---
 
-## Sample Prediction
+## Final Model Performance
+
+The Random Forest model was evaluated on the held-out test set.
+
+| Metric | Score |
+|---|---:|
+| Accuracy | 77.9% |
+| Churn Precision | 58% |
+| Churn Recall | 59% |
+| Churn F1-Score | 58% |
+
+The churn class was evaluated separately because correctly identifying customers who may churn is important for customer retention analysis.
+
+---
+
+## Confusion Matrix
+
+The confusion matrix shows the model's predictions on the held-out test data.
+
+![Confusion Matrix](images/confusion_matrix.png)
+
+The model correctly identified:
+
+- 878 customers as No Churn
+- 219 customers as Churn
+
+It incorrectly classified:
+
+- 158 No Churn customers as Churn
+- 154 Churn customers as No Churn
+
+---
+
+## Feature Importance
+
+Random Forest feature importance was used to examine which customer attributes contributed most to the model's predictions.
+
+![Feature Importance](images/feature_importance.png)
+
+This provides an additional view of the factors the model used when predicting customer churn.
+
+---
+
+## Model Persistence
+
+The trained model and preprocessing objects are saved for future inference.
+
+### Saved Artifacts
+
+- `customer_churn_model.pkl` — trained Random Forest model and feature names
+- `encoders.pkl` — fitted categorical encoders used during prediction
+
+---
+
+## Prediction
+
+The project includes a prediction script that loads the saved model and encoders and generates a churn prediction for a new customer record.
+
+Example output:
 
 ```text
 Prediction: No Churn
-
-Prediction Probability:
-[[0.78 0.22]]
-```
-
----
-
-
+Prediction Probability: [0.78 0.22]
